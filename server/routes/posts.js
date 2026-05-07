@@ -9,6 +9,7 @@ import {
   toggleLike,
   toggleCollect
 } from '../controllers/post.js'
+import { getComments, createComment } from '../controllers/comment.js'
 import { auth, optionalAuth } from '../middleware/auth.js'
 import validate from '../middleware/validate.js'
 
@@ -56,5 +57,15 @@ router.post('/:id/like', auth, toggleLike)
 
 // 收藏/取消收藏 —— 需要登录
 router.post('/:id/collect', auth, toggleCollect)
+
+// 评论列表 —— 公开访问
+router.get('/:id/comments', getComments)
+
+// 添加评论/回复 —— 需要登录
+router.post('/:id/comments', auth, [
+  body('content')
+    .trim()
+    .isLength({ min: 1, max: 2000 }).withMessage('评论内容需要 1-2000 个字符')
+], validate, createComment)
 
 export default router

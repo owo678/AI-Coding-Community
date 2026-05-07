@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --test --test-concurrency=1 tests/comment.test.js)",
+      "Bash(node -e ':*)",
+      "Bash(taskkill /PID 19316 /F)",
+      "Bash(cmd //c \"taskkill /PID 19316 /F\")"
+    ]
+  }
+}

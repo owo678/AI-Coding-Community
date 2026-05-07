@@ -180,4 +180,16 @@ async function handleSave() {
 .user-settings {
   padding: 40px 0;
 }
+@media (max-width: 768px) {
+  .user-settings {
+    padding: 12px 0;
+  }
+  .user-settings .el-col-12 {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+  .user-settings .el-col-offset-6 {
+    margin-left: 0;
+  }
+}
 </style>

@@ -1,13 +1,17 @@
 <template>
-  <el-card class="post-card" shadow="hover" @click="$router.push(`/post/${post._id}`)">
+  <el-card class="post-card" shadow="hover" @click="post._id && $router.push(`/post/${post._id}`)">
     <div class="post-card-header">
       <div class="author-info">
-        <el-avatar :size="32" :src="post.author?.avatar" @click.stop="$router.push(`/user/${post.author?._id}`)">
-          {{ post.author?.username?.[0] }}
+        <el-avatar :size="32" :src="post.author?.avatar" @click.stop="post.author && $router.push(`/user/${post.author._id}`)">
+          {{ authorDisplay.avatar }}
         </el-avatar>
         <div class="author-meta">
-          <el-link type="primary" @click.stop="$router.push(`/user/${post.author?._id}`)">
-            {{ post.author?.username }}
+          <el-link
+            :type="post.author ? 'primary' : 'info'"
+            :underline="!!post.author"
+            @click.stop="post.author && $router.push(`/user/${post.author._id}`)"
+          >
+            {{ authorDisplay.name }}
           </el-link>
           <span class="post-time">{{ formatTime(post.createdAt) }}</span>
         </div>
@@ -54,15 +58,28 @@ const props = defineProps({
 
 defineEmits(['tag-click'])
 
+const authorDisplay = computed(() => {
+  if (props.post.author) {
+    return {
+      name: props.post.author.username || '未知用户',
+      avatar: props.post.author.username?.[0] || '?'
+    }
+  }
+  return { name: '已注销用户', avatar: '?' }
+})
+
 const excerpt = computed(() => {
   const text = props.post.content || ''
   return text.length > 120 ? text.slice(0, 120) + '...' : text
 })
 
 function formatTime(dateStr) {
+  if (!dateStr) return ''
   const date = new Date(dateStr)
+  if (isNaN(date.getTime())) return ''
   const now = new Date()
   const diff = now - date
+  if (diff < 0) return ''
   const mins = Math.floor(diff / 60000)
   if (mins < 1) return '刚刚'
   if (mins < 60) return `${mins}分钟前`
@@ -101,12 +118,20 @@ function formatTime(dateStr) {
   margin: 0 0 8px;
   font-size: 17px;
   color: #303133;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .post-excerpt {
   margin: 0 0 12px;
   font-size: 14px;
   color: #606266;
   line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
 }
 .post-card-footer {
   display: flex;

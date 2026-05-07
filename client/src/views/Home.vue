@@ -45,7 +45,7 @@
               />
             </div>
           </template>
-          <el-empty v-else description="暂无帖子" />
+          <el-empty v-else :description="emptyDescription" />
         </div>
       </div>
 
@@ -53,7 +53,7 @@
       <div class="side-bar">
         <el-card shadow="never">
           <template #header><span style="font-weight:600">热门标签</span></template>
-          <div class="tag-cloud">
+          <div class="tag-cloud" v-loading="loadingTags">
             <template v-if="tags.length > 0">
               <el-tag
                 v-for="tag in tags"
@@ -74,18 +74,20 @@
 
         <el-card shadow="never" style="margin-top:12px">
           <template #header><span style="font-weight:600">热门帖子</span></template>
-          <div v-if="hotPosts.length > 0">
-            <div
-              v-for="post in hotPosts"
-              :key="post._id"
-              class="hot-item"
-              @click="$router.push(`/post/${post._id}`)"
-            >
-              {{ post.title }}
-              <span style="color:#c0c4cc;font-size:12px">👍 {{ post.likeCount || 0 }}</span>
+          <div v-loading="loadingHot">
+            <div v-if="hotPosts.length > 0">
+              <div
+                v-for="post in hotPosts"
+                :key="post._id"
+                class="hot-item"
+                @click="$router.push(`/post/${post._id}`)"
+              >
+                {{ post.title }}
+                <span style="color:#c0c4cc;font-size:12px">👍 {{ post.likeCount || 0 }}</span>
+              </div>
             </div>
+            <el-empty v-else description="暂无数据" :image-size="40" />
           </div>
-          <span v-else style="color:#999;font-size:13px">暂无数据</span>
         </el-card>
       </div>
     </div>
@@ -93,21 +95,31 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import { postAPI } from '@/api'
+import { ElMessage } from 'element-plus'
 import PostCard from '@/components/PostCard.vue'
 
 const posts = ref([])
 const hotPosts = ref([])
 const tags = ref([])
 const loading = ref(false)
+const loadingHot = ref(false)
+const loadingTags = ref(false)
 const sort = ref('latest')
 const searchQuery = ref('')
 const activeTag = ref('')
 const page = ref(1)
 const limit = ref(10)
 const total = ref(0)
+
+const emptyDescription = computed(() => {
+  if (searchQuery.value && activeTag.value) return `未找到包含"${searchQuery.value}"和标签"${activeTag.value}"的帖子`
+  if (searchQuery.value) return `未找到包含"${searchQuery.value}"的帖子`
+  if (activeTag.value) return `暂无标签为"${activeTag.value}"的帖子`
+  return '暂无帖子'
+})
 
 onMounted(() => {
   fetchPosts()
@@ -126,29 +138,35 @@ async function fetchPosts() {
     posts.value = res.posts
     total.value = res.total
   } catch (e) {
-    console.error('获取帖子列表失败', e)
+    ElMessage.error('获取帖子列表失败，请稍后重试')
   } finally {
     loading.value = false
   }
 }
 
 async function fetchHotPosts() {
+  loadingHot.value = true
   try {
     const res = await postAPI.getList({ sort: 'hot', limit: 5 })
     hotPosts.value = res.posts
   } catch (e) {
-    // 静默失败
+    hotPosts.value = []
+  } finally {
+    loadingHot.value = false
   }
 }
 
 async function fetchTags() {
+  loadingTags.value = true
   try {
     const res = await postAPI.getList({ limit: 50 })
     const tagSet = new Set()
     res.posts.forEach((p) => p.tags?.forEach((t) => tagSet.add(t)))
     tags.value = [...tagSet].slice(0, 15)
   } catch (e) {
-    // 静默失败
+    tags.value = []
+  } finally {
+    loadingTags.value = false
   }
 }
 

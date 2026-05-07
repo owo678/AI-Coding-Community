@@ -9,10 +9,14 @@
 
           <div class="post-meta">
             <el-avatar :size="24" :src="post.author?.avatar">
-              {{ post.author?.username?.[0] }}
+              {{ post.author?.username?.[0] || '?' }}
             </el-avatar>
-            <el-link type="primary" @click="$router.push(`/user/${post.author?._id}`)">
-              {{ post.author?.username }}
+            <el-link
+              :type="post.author ? 'primary' : 'info'"
+              :underline="!!post.author"
+              @click="post.author && $router.push(`/user/${post.author._id}`)"
+            >
+              {{ post.author?.username || '已注销用户' }}
             </el-link>
             <span class="meta-text">{{ formatTime(post.createdAt) }}</span>
             <span class="meta-text">浏览 {{ post.viewCount || 0 }}</span>
@@ -59,23 +63,44 @@
         </el-card>
 
         <!-- 评论区 -->
-        <el-card shadow="never" style="margin-top: 16px">
+        <el-card shadow="never" style="margin-top: 16px" v-loading="loadingComments">
           <template #header>
             <span style="font-weight:600">评论 ({{ post.commentCount || 0 }})</span>
           </template>
-          <div v-if="comments.length > 0">
-            <div v-for="c in comments" :key="c._id" class="comment-item">
-              <div class="comment-header">
-                <el-avatar :size="24" :src="c.author?.avatar">
-                  {{ c.author?.username?.[0] }}
-                </el-avatar>
-                <span class="comment-author">{{ c.author?.username }}</span>
-                <span class="comment-time">{{ formatTime(c.createdAt) }}</span>
-              </div>
-              <p class="comment-content">{{ c.content }}</p>
-            </div>
+
+          <!-- 评论输入 -->
+          <div class="comment-input-area" v-if="authStore.isLoggedIn">
+            <el-input
+              v-model="commentContent"
+              type="textarea"
+              :rows="2"
+              placeholder="写下你的评论..."
+              maxlength="2000"
+              show-word-limit
+            />
+            <el-button
+              type="primary"
+              size="small"
+              style="margin-top:8px"
+              :loading="submittingComment"
+              @click="handleAddComment"
+            >
+              发表评论
+            </el-button>
           </div>
-          <el-empty v-else description="暂无评论，来发表第一条评论吧" :image-size="60" />
+          <el-divider v-if="authStore.isLoggedIn" />
+
+          <!-- 评论列表 -->
+          <div v-if="comments.length > 0">
+            <CommentItem
+              v-for="c in comments"
+              :key="c._id"
+              :comment="c"
+              @delete="handleDeleteComment"
+              @reply="handleReply"
+            />
+          </div>
+          <el-empty v-else-if="!loadingComments" description="暂无评论，来发表第一条评论吧" :image-size="60" />
         </el-card>
       </div>
 
@@ -84,17 +109,18 @@
         <el-card shadow="never">
           <template #header><span style="font-weight:600">关于作者</span></template>
           <div class="author-card">
-            <el-avatar :size="56" :src="post.author?.avatar" @click="$router.push(`/user/${post.author?._id}`)" style="cursor:pointer">
-              {{ post.author?.username?.[0] }}
+            <el-avatar :size="56" :src="post.author?.avatar" @click="post.author && $router.push(`/user/${post.author._id}`)" :style="{ cursor: post.author ? 'pointer' : 'default' }">
+              {{ post.author?.username?.[0] || '?' }}
             </el-avatar>
-            <div class="author-name">{{ post.author?.username }}</div>
+            <div class="author-name">{{ post.author?.username || '已注销用户' }}</div>
             <div class="author-bio" v-if="post.author?.bio">{{ post.author?.bio }}</div>
             <el-button
+              v-if="post.author"
               size="small"
               style="width:100%;margin-top:8px"
               type="primary"
               plain
-              @click="$router.push(`/user/${post.author?._id}`)"
+              @click="$router.push(`/user/${post.author._id}`)"
             >
               查看主页
             </el-button>
@@ -130,6 +156,7 @@ import { Star, Collection } from '@element-plus/icons-vue'
 import { postAPI, commentAPI } from '@/api'
 import { useAuthStore } from '@/stores/auth'
 import { ElMessage } from 'element-plus'
+import CommentItem from '@/components/CommentItem.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -138,6 +165,9 @@ const authStore = useAuthStore()
 const post = ref({ author: {}, tags: [] })
 const comments = ref([])
 const loading = ref(false)
+const loadingComments = ref(false)
+const commentContent = ref('')
+const submittingComment = ref(false)
 
 const isAuthor = computed(() => {
   return authStore.user?._id === post.value.author?._id
@@ -160,12 +190,14 @@ async function fetchPost() {
   }
 
   // 评论独立加载，失败不影响帖子展示
+  loadingComments.value = true
   try {
     const commentRes = await commentAPI.getList(route.params.id)
     comments.value = commentRes.comments || []
   } catch (e) {
-    // 评论接口阶段4实现，暂静默降级
     comments.value = []
+  } finally {
+    loadingComments.value = false
   }
 }
 
@@ -197,6 +229,80 @@ async function handleDelete() {
   } catch (e) {
     ElMessage.error(e.message || '删除失败')
   }
+}
+
+async function handleAddComment() {
+  const content = commentContent.value.trim()
+  if (!content) return
+
+  submittingComment.value = true
+  try {
+    const res = await commentAPI.create(route.params.id, { content })
+    comments.value.unshift({
+      ...res.comment,
+      replies: []
+    })
+    post.value.commentCount = (post.value.commentCount || 0) + 1
+    commentContent.value = ''
+    ElMessage.success('评论发布成功')
+  } catch (e) {
+    ElMessage.error(e.message || '评论失败')
+  } finally {
+    submittingComment.value = false
+  }
+}
+
+async function handleDeleteComment(commentId) {
+  try {
+    await commentAPI.delete(commentId)
+    removeComment(comments.value, commentId)
+    post.value.commentCount = (post.value.commentCount || 0) - 1
+    ElMessage.success('评论已删除')
+  } catch (e) {
+    ElMessage.error(e.message || '删除失败')
+  }
+}
+
+function removeComment(list, id) {
+  for (let i = list.length - 1; i >= 0; i--) {
+    if (list[i]._id === id) {
+      list.splice(i, 1)
+      return
+    }
+    if (list[i].replies?.length) {
+      removeComment(list[i].replies, id)
+    }
+  }
+}
+
+async function handleReply({ content, parentId }) {
+  try {
+    const res = await commentAPI.create(route.params.id, {
+      content,
+      parentComment: parentId
+    })
+    // 找到父评论并添加回复
+    const parent = findComment(comments.value, parentId)
+    if (parent) {
+      if (!parent.replies) parent.replies = []
+      parent.replies.push(res.comment)
+    }
+    post.value.commentCount = (post.value.commentCount || 0) + 1
+    ElMessage.success('回复成功')
+  } catch (e) {
+    ElMessage.error(e.message || '回复失败')
+  }
+}
+
+function findComment(list, id) {
+  for (const item of list) {
+    if (item._id === id) return item
+    if (item.replies?.length) {
+      const found = findComment(item.replies, id)
+      if (found) return found
+    }
+  }
+  return null
 }
 
 function formatTime(dateStr) {

@@ -41,33 +41,15 @@
 
       <!-- 右侧：用户帖子列表 -->
       <el-col :span="18">
-        <el-card>
+        <el-card v-loading="postsLoading">
           <template #header>
             <span>{{ profile.user?.username }} 的帖子</span>
           </template>
           <div v-if="posts.length === 0" class="empty-state">
             <el-empty description="暂无帖子" />
           </div>
-          <div v-else class="post-list">
-            <div
-              v-for="post in posts"
-              :key="post._id"
-              class="post-item"
-              @click="$router.push(`/post/${post._id}`)"
-            >
-              <h3>{{ post.title }}</h3>
-              <div class="post-meta">
-                <span>{{ formatDate(post.createdAt) }}</span>
-                <el-tag
-                  v-for="tag in post.tags"
-                  :key="tag"
-                  size="small"
-                  style="margin-left: 6px"
-                >
-                  {{ tag }}
-                </el-tag>
-              </div>
-            </div>
+          <div v-else>
+            <PostCard v-for="post in posts" :key="post._id" :post="post" />
           </div>
           <el-pagination
             v-if="total > limit"
@@ -85,16 +67,19 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, onMounted } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { userAPI } from '@/api'
+import { ElMessage } from 'element-plus'
+import PostCard from '@/components/PostCard.vue'
 
 const route = useRoute()
 const authStore = useAuthStore()
 
 const userId = computed(() => route.params.id)
 const loading = ref(false)
+const postsLoading = ref(false)
 const followLoading = ref(false)
 const isFollowing = ref(false)
 
@@ -111,7 +96,10 @@ const profile = reactive({
 })
 
 function formatDate(dateStr) {
-  return new Date(dateStr).toLocaleDateString('zh-CN')
+  if (!dateStr) return ''
+  const date = new Date(dateStr)
+  if (isNaN(date.getTime())) return ''
+  return date.toLocaleDateString('zh-CN')
 }
 
 async function fetchProfile() {
@@ -124,7 +112,7 @@ async function fetchProfile() {
       checkFollowStatus()
     }
   } catch (err) {
-    console.error('获取用户信息失败:', err)
+    ElMessage.error('获取用户信息失败')
   } finally {
     loading.value = false
   }
@@ -136,11 +124,12 @@ async function checkFollowStatus() {
     const { users } = await userAPI.getFollowing(authStore.user._id)
     isFollowing.value = users.some((u) => u._id === userId.value)
   } catch {
-    // 忽略
+    // 静默失败，关注状态不影响主要功能
   }
 }
 
 async function fetchPosts() {
+  postsLoading.value = true
   try {
     const data = await userAPI.getUserPosts(userId.value, {
       page: page.value,
@@ -149,7 +138,9 @@ async function fetchPosts() {
     posts.value = data.posts
     total.value = data.total
   } catch (err) {
-    console.error('获取帖子失败:', err)
+    ElMessage.error('获取帖子失败')
+  } finally {
+    postsLoading.value = false
   }
 }
 
@@ -165,7 +156,7 @@ async function handleFollow() {
       profile.followersCount--
     }
   } catch (err) {
-    console.error('操作失败:', err)
+    ElMessage.error(err.message || '操作失败')
   } finally {
     followLoading.value = false
   }
@@ -225,5 +216,18 @@ watch(userId, () => {
 }
 .empty-state {
   padding: 40px;
+}
+@media (max-width: 768px) {
+  .user-profile .el-row {
+    flex-direction: column;
+  }
+  .user-profile .el-col-6,
+  .user-profile .el-col-18 {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+  .user-profile .el-col-6 {
+    margin-bottom: 16px;
+  }
 }
 </style>

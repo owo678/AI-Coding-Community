@@ -118,6 +118,17 @@ async function handleRegister() {
 }
 .auth-card {
   width: 400px;
+  max-width: 100%;
+}
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 20px 16px;
+    align-items: flex-start;
+    padding-top: 60px;
+  }
+  .auth-card {
+    width: 100%;
+  }
 }
 .auth-title {
   text-align: center;

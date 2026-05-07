@@ -8,7 +8,8 @@
       "Bash(npm run *)",
       "Bash(timeout 8 node index.js)",
       "Bash(mongosh --version)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(node -e ':*)"
     ]
   }
 }

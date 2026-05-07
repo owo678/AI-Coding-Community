@@ -143,10 +143,26 @@ async function handleSubmit() {
   display: flex;
   justify-content: center;
   padding-top: 20px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 .form-card {
   width: 100%;
   max-width: 600px;
+}
+@media (max-width: 768px) {
+  .post-form-page {
+    padding-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .form-actions {
+    flex-direction: column;
+  }
+  .form-actions .el-button {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 .form-actions {
   display: flex;
