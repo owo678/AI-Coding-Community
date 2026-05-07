@@ -24,10 +24,12 @@ app.use('/uploads', express.static(config.uploadDir))
 // ---------- 路由 ----------
 import authRoutes from './routes/auth.js'
 import userRoutes from './routes/user.js'
+import postRoutes from './routes/posts.js'
 import uploadRoutes from './routes/upload.js'
 
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/users', userRoutes)
+app.use('/api/v1/posts', postRoutes)
 app.use('/api/v1/upload', uploadRoutes)
 
 app.get('/api/v1/health', (req, res) => {

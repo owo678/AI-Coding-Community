@@ -1,0 +1,132 @@
+<h2>帖子详情页 —— 布局方案</h2>
+<p class="subtitle">展示帖子内容、作者信息、评论区域</p>
+
+<div class="section">
+  <h3>方案 A：经典论坛布局（评论在底部）</h3>
+  <div class="mockup">
+    <div class="mockup-header">帖子详情 —— 方案A</div>
+    <div class="mockup-body" style="background: #f5f7fa; padding: 16px; max-width: 800px;">
+      <!-- 帖子主体 -->
+      <div style="background:#fff; border-radius:8px; padding:20px; margin-bottom:16px;">
+        <h2 style="margin:0 0 12px;">使用 Vue3 + Element Plus 搭建前端项目</h2>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#409eff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;">张</div>
+          <div>
+            <div style="font-size:14px;font-weight:500;">张三</div>
+            <div style="font-size:12px;color:#999;">2024-01-15 · 浏览 256</div>
+          </div>
+        </div>
+        <div style="background:#fafafa;padding:16px;border-radius:6px;line-height:1.8;font-size:14px;margin-bottom:12px;">
+          分享了从零搭建项目的完整流程...<br><br>包括项目初始化、路由配置、状态管理等核心内容。
+        </div>
+        <div style="display:flex; gap:6px; margin-bottom:12px;">
+          <span style="padding:2px 8px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">Vue</span>
+          <span style="padding:2px 8px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">前端</span>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <span style="color:#666;font-size:14px;">👍 12</span>
+          <span style="color:#666;font-size:14px;">⭐ 收藏</span>
+        </div>
+      </div>
+      <!-- 评论区 -->
+      <div style="background:#fff; border-radius:8px; padding:20px;">
+        <h3 style="margin:0 0 12px;">评论 (3)</h3>
+        <div style="background:#fafafa;padding:12px;border-radius:6px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:500;">李四</div>
+          <p style="margin:4px 0;font-size:14px;">写得很详细，学习了！</p>
+          <div style="font-size:12px;color:#999;">2小时前</div>
+        </div>
+        <div style="background:#fafafa;padding:12px;border-radius:6px;margin-bottom:8px;margin-left:32px;">
+          <div style="font-size:13px;font-weight:500;">张三 <span style="color:#999;font-weight:400;">回复 李四</span></div>
+          <p style="margin:4px 0;font-size:14px;">谢谢支持，有问题随时交流</p>
+          <div style="font-size:12px;color:#999;">1小时前</div>
+        </div>
+        <div style="margin-top:12px;">
+          <textarea style="width:100%;height:60px;border:1px solid #ddd;border-radius:4px;padding:8px;font-size:14px;resize:vertical;" placeholder="写下你的评论..."></textarea>
+          <button class="mock-button" style="margin-top:8px;background:#409eff;color:#fff;">发布评论</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>方案 B：双栏布局（帖子内容 + 作者信息侧栏）</h3>
+  <div class="mockup">
+    <div class="mockup-header">帖子详情 —— 方案B</div>
+    <div class="mockup-body" style="background: #f5f7fa; padding: 16px; max-width: 900px;">
+      <div style="display:flex; gap:16px;">
+        <!-- 主内容 -->
+        <div style="flex:1;">
+          <div style="background:#fff; border-radius:8px; padding:20px; margin-bottom:16px;">
+            <h2 style="margin:0 0 12px;">使用 Vue3 + Element Plus 搭建前端项目</h2>
+            <div style="display:flex; gap:6px; margin-bottom:12px;">
+              <span style="padding:2px 8px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">Vue</span>
+              <span style="padding:2px 8px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">前端</span>
+            </div>
+            <div style="background:#fafafa;padding:16px;border-radius:6px;line-height:1.8;font-size:14px;margin-bottom:12px;">
+              分享了从零搭建项目的完整流程...包括项目初始化、路由配置、状态管理。
+            </div>
+            <div style="display:flex; align-items:center; gap:16px;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <div style="width:24px;height:24px;border-radius:50%;background:#409eff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;">张</div>
+                <span style="font-size:13px;">张三 · 2024-01-15 · 256浏览</span>
+              </div>
+            </div>
+          </div>
+          <!-- 评论区 -->
+          <div style="background:#fff; border-radius:8px; padding:20px;">
+            <h3 style="margin:0 0 12px;">评论 (3)</h3>
+            <div style="background:#fafafa;padding:12px;border-radius:6px;margin-bottom:8px;">
+              <div style="font-size:13px;font-weight:500;">李四</div>
+              <p style="margin:4px 0;font-size:14px;">写得很详细，学习了！</p>
+              <div style="font-size:12px;color:#999;">2小时前</div>
+            </div>
+            <div style="margin-top:12px;">
+              <textarea style="width:100%;height:60px;border:1px solid #ddd;border-radius:4px;padding:8px;font-size:14px;resize:vertical;" placeholder="写下你的评论..."></textarea>
+              <button class="mock-button" style="margin-top:8px;background:#409eff;color:#fff;">发布评论</button>
+            </div>
+          </div>
+        </div>
+        <!-- 侧栏 -->
+        <div style="width:200px;flex-shrink:0;">
+          <div style="background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.1);margin-bottom:10px;">
+            <h4 style="margin:0 0 10px;font-size:14px;">关于作者</h4>
+            <div style="text-align:center;">
+              <div style="width:60px;height:60px;border-radius:50%;background:#409eff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 8px;">张</div>
+              <div style="font-size:14px;font-weight:500;">张三</div>
+              <div style="font-size:12px;color:#999;margin:4px 0;">前端开发者</div>
+              <div style="font-size:12px;color:#666;">关注 12 · 粉丝 8</div>
+              <button class="mock-button" style="margin-top:8px;background:#409eff;color:#fff;width:100%;">+ 关注</button>
+            </div>
+          </div>
+          <div style="background:#fff;border-radius:8px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,.1);">
+            <h4 style="margin:0 0 8px;font-size:14px;">互动</h4>
+            <div style="display:flex;justify-content:space-around;text-align:center;">
+              <div><div style="font-size:18px;">👍</div><div style="font-size:12px;">12 赞</div></div>
+              <div><div style="font-size:18px;">⭐</div><div style="font-size:12px;">收藏</div></div>
+              <div><div style="font-size:18px;">💬</div><div style="font-size:12px;">3 评</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>经典论坛布局</h3>
+      <p>帖子+评论垂直排列，内容区更宽，阅读沉浸感强</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>带作者侧栏</h3>
+      <p>右侧展示作者信息和互动按钮，社交属性更强</p>
+    </div>
+  </div>
+</div>

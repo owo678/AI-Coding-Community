@@ -1,0 +1,111 @@
+<h2>首页帖子流 —— 布局方案</h2>
+<p class="subtitle">阶段3的核心前端页面，需要展示帖子列表、排序切换、标签筛选</p>
+
+<div class="section">
+  <h3>方案 A：单栏卡片流</h3>
+  <p>全部内容集中在一栏，简洁直观，适合内容型社区</p>
+  <div class="mockup">
+    <div class="mockup-header">首页布局 —— 方案A</div>
+    <div class="mockup-body" style="background: #f5f7fa; padding: 16px;">
+      <div class="mock-nav" style="margin-bottom: 12px;">Logo | 首页 | 🔒 登录 | 注册</div>
+      <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+        <button class="mock-button" style="background: #409eff; color: #fff; margin: 0;">最新</button>
+        <button class="mock-button" style="margin: 0;">热门</button>
+        <input class="mock-input" placeholder="搜索帖子..." style="margin: 0 0 0 auto; width: 200px;">
+      </div>
+      <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+        <span style="padding:2px 8px;background:#409eff;color:#fff;border-radius:3px;font-size:12px;">全部</span>
+        <span style="padding:2px 8px;background:#e8e8e8;border-radius:3px;font-size:12px;">Vue</span>
+        <span style="padding:2px 8px;background:#e8e8e8;border-radius:3px;font-size:12px;">Node</span>
+        <span style="padding:2px 8px;background:#e8e8e8;border-radius:3px;font-size:12px;">AI</span>
+        <span style="padding:2px 8px;background:#e8e8e8;border-radius:3px;font-size:12px;">MongoDB</span>
+      </div>
+      <div style="background:#fff; border-radius:8px; padding:16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,.1)">
+        <h4 style="margin:0 0 6px">使用 Vue3 + Element Plus 搭建前端项目</h4>
+        <p style="color:#909399;font-size:13px;margin:0 0 8px">分享了从零搭建项目的完整流程...</p>
+        <span style="font-size:12px;color:#c0c4cc;">by 张三 · 2小时前 · 👍 12 · 💬 5 · ⭐ 3</span>
+      </div>
+      <div style="background:#fff; border-radius:8px; padding:16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,.1)">
+        <h4 style="margin:0 0 6px">Express 中间件最佳实践总结</h4>
+        <p style="color:#909399;font-size:13px;margin:0 0 8px">总结了一些常用的 Express 中间件...</p>
+        <span style="font-size:12px;color:#c0c4cc;">by 李四 · 5小时前 · 👍 8 · 💬 3 · ⭐ 1</span>
+      </div>
+      <div style="background:#fff; border-radius:8px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.1)">
+        <h4 style="margin:0 0 6px">MongoDB 聚合管道实战</h4>
+        <p style="color:#909399;font-size:13px;margin:0 0 8px">介绍 MongoDB 聚合管道的常见用法...</p>
+        <span style="font-size:12px;color:#c0c4cc;">by 王五 · 1天前 · 👍 20 · 💬 12 · ⭐ 5</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>方案 B：双栏布局（左侧主内容 + 右侧标签栏）</h3>
+  <p>右侧固定标签筛选区，浏览时始终可见，适合标签较多的场景</p>
+  <div class="mockup">
+    <div class="mockup-header">首页布局 —— 方案B</div>
+    <div class="mockup-body" style="background: #f5f7fa; padding: 16px;">
+      <div class="mock-nav" style="margin-bottom: 12px;">Logo | 首页 | 🔒 登录 | 注册</div>
+      <div style="display: flex; gap: 16px;">
+        <div style="flex: 1;">
+          <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+            <button class="mock-button" style="background: #409eff; color: #fff; margin: 0;">最新</button>
+            <button class="mock-button" style="margin: 0;">热门</button>
+            <input class="mock-input" placeholder="搜索..." style="margin: 0 0 0 auto; width: 160px;">
+          </div>
+          <div style="background:#fff; border-radius:8px; padding:16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,.1)">
+            <h4 style="margin:0 0 6px">使用 Vue3 + Element Plus 搭建前端项目</h4>
+            <p style="color:#909399;font-size:13px;margin:0 0 8px">分享了从零搭建项目的完整流程...</p>
+            <span style="font-size:12px;color:#c0c4cc;">👍 12 · 💬 5 · ⭐ 3 · 2小时前</span>
+          </div>
+          <div style="background:#fff; border-radius:8px; padding:16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,.1)">
+            <h4 style="margin:0 0 6px">Express 中间件最佳实践总结</h4>
+            <p style="color:#909399;font-size:13px;margin:0 0 8px">中间件的使用经验和技巧...</p>
+            <span style="font-size:12px;color:#c0c4cc;">👍 8 · 💬 3 · ⭐ 1 · 5小时前</span>
+          </div>
+          <div style="background:#fff; border-radius:8px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.1)">
+            <h4 style="margin:0 0 6px">MongoDB 聚合管道实战</h4>
+            <p style="color:#909399;font-size:13px;margin:0 0 8px">介绍 MongoDB 聚合管道的常见用法...</p>
+            <span style="font-size:12px;color:#c0c4cc;">👍 20 · 💬 12 · ⭐ 5 · 1天前</span>
+          </div>
+        </div>
+        <div style="width: 200px; flex-shrink: 0;">
+          <div style="background:#fff; border-radius:8px; padding:12px; box-shadow:0 1px 3px rgba(0,0,0,.1);">
+            <h4 style="margin:0 0 8px; font-size:14px;">热门标签</h4>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              <span style="padding:3px 10px;background:#409eff;color:#fff;border-radius:3px;font-size:12px;">Vue</span>
+              <span style="padding:3px 10px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">React</span>
+              <span style="padding:3px 10px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">Node</span>
+              <span style="padding:3px 10px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">AI</span>
+              <span style="padding:3px 10px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">Python</span>
+              <span style="padding:3px 10px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">CSS</span>
+            </div>
+          </div>
+          <div style="background:#fff; border-radius:8px; padding:12px; margin-top:10px; box-shadow:0 1px 3px rgba(0,0,0,.1);">
+            <h4 style="margin:0 0 8px; font-size:14px;">热门帖子</h4>
+            <p style="font-size:12px;color:#666;margin:4px 0;">🔥 Vue3实战教程</p>
+            <p style="font-size:12px;color:#666;margin:4px 0;">🔥 Node性能优化</p>
+            <p style="font-size:12px;color:#666;margin:4px 0;">🔥 MongoDB入门</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>单栏卡片流</h3>
+      <p>简洁，适合内容型社区，标签栏集成在内容区域上方</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>双栏布局</h3>
+      <p>主内容+右侧标签/热门栏，信息密度更高，适合内容丰富的社区</p>
+    </div>
+  </div>
+</div>

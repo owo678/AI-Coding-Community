@@ -1,0 +1,91 @@
+<h2>发帖/编辑帖页面 —— 布局方案</h2>
+<p class="subtitle">发帖和编辑共用一个表单组件，编辑时预填已有内容</p>
+
+<div class="section">
+  <h3>方案 A：居中窄表单（600px）</h3>
+  <p>适合内容聚焦、移动端友好的体验</p>
+  <div class="mockup">
+    <div class="mockup-header">发帖页面 —— 方案A</div>
+    <div class="mockup-body" style="background: #f5f7fa; padding: 16px; display:flex; justify-content:center;">
+      <div style="background:#fff; border-radius:8px; padding:24px; width:600px;">
+        <h2 style="margin:0 0 20px; font-size:18px;">发布新帖子</h2>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:14px;font-weight:500;margin-bottom:6px;">标题</label>
+          <input class="mock-input" style="width:100%; box-sizing:border-box;" placeholder="请输入标题（最多100字）">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:14px;font-weight:500;margin-bottom:6px;">标签</label>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;">
+            <span style="padding:2px 10px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">Vue ✕</span>
+            <span style="padding:2px 10px;background:#ecf5ff;color:#409eff;border-radius:3px;font-size:12px;">前端 ✕</span>
+          </div>
+          <input class="mock-input" style="width:120px;" placeholder="添加标签...">
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="display:block;font-size:14px;font-weight:500;margin-bottom:6px;">内容</label>
+          <textarea style="width:100%;height:200px;border:1px solid #ddd;border-radius:4px;padding:10px;font-size:14px;resize:vertical;box-sizing:border-box;" placeholder="分享你的AI编程经验..."></textarea>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button class="mock-button">取消</button>
+          <button class="mock-button" style="background:#409eff;color:#fff;">发布</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>方案 B：全宽布局 + Markdown 预览</h3>
+  <p>左侧编辑器+右侧实时预览，适合长文技术分享</p>
+  <div class="mockup">
+    <div class="mockup-header">发帖页面 —— 方案B</div>
+    <div class="mockup-body" style="background: #f5f7fa; padding: 16px;">
+      <h2 style="margin:0 0 16px; font-size:18px;">发布新帖子</h2>
+      <div style="margin-bottom:12px;display:flex;gap:12px;align-items:center;">
+        <input class="mock-input" style="flex:1;" placeholder="请输入标题（最多100字）">
+        <div style="display:flex;gap:6px;align-items:center;">
+          <span style="font-size:13px;color:#666;">标签:</span>
+          <input class="mock-input" style="width:100px;" placeholder="添加标签">
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <div style="flex:1;">
+          <div style="background:#fff;border:1px solid #ddd;border-radius:4px;overflow:hidden;">
+            <div style="padding:6px 12px;background:#f5f7fa;border-bottom:1px solid #ddd;font-size:12px;color:#999;">编辑器</div>
+            <textarea style="width:100%;height:300px;border:none;padding:12px;font-size:14px;resize:none;box-sizing:border-box;" placeholder="分享你的AI编程经验...&#10;&#10;支持 Markdown 语法"></textarea>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="background:#fff;border:1px solid #ddd;border-radius:4px;overflow:hidden;">
+            <div style="padding:6px 12px;background:#f5f7fa;border-bottom:1px solid #ddd;font-size:12px;color:#999;">预览</div>
+            <div style="padding:12px;height:300px;overflow:auto;font-size:14px;line-height:1.8;">
+              <h3>分享你的AI编程经验...</h3>
+              <p>这里会实时渲染 Markdown 内容预览</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;">
+        <button class="mock-button">取消</button>
+        <button class="mock-button" style="background:#409eff;color:#fff;">发布</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>居中窄表单</h3>
+      <p>简洁清晰，单文本域编辑，适合短篇内容，与 Element Plus 风格一致</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Markdown 分屏编辑器</h3>
+      <p>左写右预览，适合技术长文，但实现复杂度高（阶段5扩展）</p>
+    </div>
+  </div>
+</div>

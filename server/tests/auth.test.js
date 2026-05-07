@@ -1,5 +1,7 @@
 // 认证接口集成测试
-// 运行方式：NODE_ENV=test node --test tests/auth.test.js
+// 运行方式：node --test tests/auth.test.js
+
+process.env.NODE_ENV = 'test'
 
 import { describe, it, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert'
