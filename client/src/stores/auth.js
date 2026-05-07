@@ -27,8 +27,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchUser() {
     const res = await authAPI.getMe()
-    user.value = res
-    localStorage.setItem('user', JSON.stringify(res))
+    user.value = res.user
+    localStorage.setItem('user', JSON.stringify(res.user))
   }
 
   function logout() {
