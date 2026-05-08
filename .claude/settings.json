@@ -4,7 +4,12 @@
       "Bash(node --test --test-concurrency=1 tests/comment.test.js)",
       "Bash(node -e ':*)",
       "Bash(taskkill /PID 19316 /F)",
-      "Bash(cmd //c \"taskkill /PID 19316 /F\")"
+      "Bash(cmd //c \"taskkill /PID 19316 /F\")",
+      "Bash(\"D:/mongodb-win32-x86_64-windows-8.3.1/bin/mongod.exe\" --dbpath=\"D:/mongodb-win32-x86_64-windows-8.3.1/data\" --logpath=\"D:/mongodb-win32-x86_64-windows-8.3.1/data/mongod.log\" --fork)",
+      "Bash(taskkill //F //IM mongod.exe)",
+      "Bash(\"D:/mongodb-win32-x86_64-windows-8.3.1/bin/mongod.exe\" --dbpath=\"D:/mongodb-win32-x86_64-windows-8.3.1/data\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\" http://localhost:3000/api/v1/posts)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\" http://localhost:5173)"
     ]
   }
 }
