@@ -9,7 +9,32 @@
       "Bash(timeout 8 node index.js)",
       "Bash(mongosh --version)",
       "Bash(node -e ' *)",
-      "Bash(node -e ':*)"
+      "Bash(node -e ':*)",
+      "Bash(winget install *)",
+      "Bash(ls \"D:/mongodb-win32-x86_64-windows-8.3.1/bin/\")",
+      "Read(//d/mongodb-win32-x86_64-windows-8.3.1/bin/**)",
+      "Bash(mkdir -p /d/data/db)",
+      "Bash(\"D:/mongodb-win32-x86_64-windows-8.3.1/bin/mongod.exe\" --version)",
+      "Bash(sleep 3; cat /c/data/db/mongod.log | tail -5)",
+      "Read(//c/data/db/**)",
+      "Bash(tasklist //FI \"IMAGENAME eq mongod.exe\")",
+      "Bash(mkdir -p /c/data/db)",
+      "Bash(\"D:/mongodb-win32-x86_64-windows-8.3.1/bin/mongod.exe\" --dbpath /c/data/db)",
+      "Bash(mongosh --eval \"db.runCommand\\({ ping: 1 }\\)\")",
+      "Read(//c//**)",
+      "Read(//d//**)",
+      "Bash(find /c/ -name \"mongosh*\" -maxdepth 5 2>/dev/null | head -20)",
+      "Bash(cmd.exe /c \"where mongosh 2>nul\")",
+      "Read(//c/Program Files/MongoDB/Tools/100/**)",
+      "Read(//c/Program Files/MongoDB/Server/8.3/**)",
+      "Read(//c/Program Files/MongoDB/**)",
+      "Read(//c/Users/sun/AppData/Local/Microsoft/**)",
+      "Bash(node -e \"const net = require\\('net'\\); const c = net.connect\\(27017, '127.0.0.1', \\(\\) => { console.log\\('MongoDB 连接成功!'\\); c.end\\(\\); process.exit\\(0\\); }\\); c.on\\('error', \\(e\\) => { console.log\\('连接失败:', e.message\\); process.exit\\(1\\); }\\)\")",
+      "Bash(node index.js)",
+      "Bash(npm test *)"
+    ],
+    "additionalDirectories": [
+      "C:\\data\\db"
     ]
   }
 }
